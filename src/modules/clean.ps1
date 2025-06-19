@@ -52,20 +52,37 @@ Write-Host "`n=== Ajustando efeitos visuais para MELHOR DESEMPENHO..."
 Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects" -Name "VisualFXSetting" -Value 2 -ErrorAction SilentlyContinue
 Set-ItemProperty -Path "HKCU:\Control Panel\Performance" -Name "VisualFXSetting" -Value 2 -ErrorAction SilentlyContinue
 
-# Configuração do Pagefile (sem WMIC - usando WMI moderno)
+# Configuração do Pagefile (sem WMIC - usando WMI moderno e evitando conflito de range)
 Write-Host "`n=== Configurando Pagefile..."
 Try {
+    # Desativar gerenciamento automático
     $sys = Get-CimInstance -ClassName Win32_ComputerSystem
     $sys.AutomaticManagedPagefile = $false
     Set-CimInstance -InputObject $sys
 
-    Get-CimInstance -ClassName Win32_PageFileSetting | Remove-CimInstance -ErrorAction SilentlyContinue
-    New-CimInstance -ClassName Win32_PageFileSetting -Property @{ Name = "C:\pagefile.sys"; InitialSize = 4096; MaximumSize = 8192 } | Out-Null
+    # Apagar qualquer configuração de pagefile existente
+    Get-CimInstance -ClassName Win32_PageFileSetting | ForEach-Object {
+        Write-Host "Removendo configuração antiga de Pagefile: $($_.Name)"
+        Remove-CimInstance -InputObject $_
+    }
 
-    Write-Host "Pagefile configurado manualmente: Inicial=4096MB, Máximo=8192MB" -ForegroundColor Green
+    # Criar nova configuração
+    $InitialMB = [uint32]4096
+    $MaxMB = [uint32]8192
+
+    $newPagefile = @{
+        Name        = "C:\pagefile.sys"
+        InitialSize = $InitialMB
+        MaximumSize = $MaxMB
+    }
+
+    New-CimInstance -ClassName Win32_PageFileSetting -Property $newPagefile | Out-Null
+
+    Write-Host "Pagefile configurado manualmente: Inicial=$InitialMB MB, Máximo=$MaxMB MB" -ForegroundColor Green
 } Catch {
     Write-Host "Falha ao configurar o Pagefile (Erro WMI): $_" -ForegroundColor Yellow
 }
+
 
 # Desabilitando serviços desnecessários
 Write-Host "`n=== Desabilitando serviços desnecessários..."
