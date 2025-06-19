@@ -4,6 +4,9 @@ Um conjunto de scripts Batch para otimização extrema de desempenho e coleta de
 
 ---
 
+Versão Atual: 0.1 Beta
+
+
 ## 📂 Scripts incluídos:
 
 | Script | Função |
@@ -24,3 +27,9 @@ Um conjunto de scripts Batch para otimização extrema de desempenho e coleta de
 
 ## ✅ Autor:
 Matheus Torres (Zer0G0ld)
+
+# Mapeamento de Categorias
+
+[Roadmap](docs/Roadmap.md)
+[Changelog](docs/Changelog.md)
+[Docs](docs/Projeto.md)

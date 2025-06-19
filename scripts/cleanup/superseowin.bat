@@ -1,3 +1,36 @@
+::[Bat To Exe Converter]
+::
+::YAwzoRdxOk+EWAjk
+::fBw5plQjdCyDJGyX8VAjFCFRXlS+GGStCLkT6ezo0/CCsB0KXexxcYzUug==
+::YAwzuBVtJxjWCl3EqQJgSA==
+::ZR4luwNxJguZRRnk
+::Yhs/ulQjdFy5
+::cxAkpRVqdFKZSjk=
+::cBs/ulQjdFy5
+::ZR41oxFsdFKZSDk=
+::eBoioBt6dFKZSDk=
+::cRo6pxp7LAbNWATEpCI=
+::egkzugNsPRvcWATEpCI=
+::dAsiuh18IRvcCxnZtBJQ
+::cRYluBh/LU+EWAnk
+::YxY4rhs+aU+IeA==
+::cxY6rQJ7JhzQF1fEqQJgZksaHErTXA==
+::ZQ05rAF9IBncCkqN+0xwdVsEAlTMbCXrZg==
+::ZQ05rAF9IAHYFVzEqQIqLQkEWw2McX+tA7QX+4g=
+::eg0/rx1wNQPfEVWB+kM9LVsJDB6HLjutD7tR/P/+7uGUwg==
+::fBEirQZwNQPfEVWB+kM9LVsJDB6HLjutD7tR/P/+7uGUwg==
+::cRolqwZ3JBvQF1fEqQIAOhRTXgWPPXj6FrQO6aj0++OKq1ccRqIwOJzSyaCLLeFT/UzqcZk6xRo=
+::dhA7uBVwLU+EWGOB5hJQ
+::YQ03rBFzNR3SWATElA==
+::dhAmsQZ3MwfNWATEzkcieHs=
+::ZQ0/vhVqMQ3MEVWAtB9wSA==
+::Zg8zqx1/OA3MEVWAtB9wSA==
+::dhA7pRFwIByZRRnk
+::Zh4grVQjdCyDJGyX8VAjFCFRXlS+GG6pDaET+NTh6vjXtUQTGfYofY7QyfqLOOVz
+::YB416Ek+ZG8=
+::
+::
+::978f952a14a936cc963da21a135fa983
 REM Author: Zer0G0ld
 
 @echo off
