@@ -13,9 +13,9 @@ timeout /t 2
 for /f "tokens=3" %%a in ('fsutil volume diskfree C: ^| find "Total # of free bytes"') do set before=%%a
 
 echo === Limpando arquivos temporarios...
-del /s /f /q %temp%\*
-del /s /f /q C:\Windows\Temp\*
-del /s /f /q C:\Windows\Prefetch\*
+del /s /f /q %temp%\* >nul 2>&1
+del /s /f /q C:\Windows\Temp\* >nul 2>&1
+del /s /f /q C:\Windows\Prefetch\* >nul 2>&1
 echo.
 
 echo === Limpando cache do Windows Update...
@@ -35,8 +35,8 @@ ipconfig /flushdns
 echo.
 
 echo === Ajustando efeitos visuais para MELHOR DESEMPENHO...
-reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects" /v VisualFXSetting /t REG_DWORD /d 2 /f
-reg add "HKCU\Control Panel\Performance" /v VisualFXSetting /t REG_DWORD /d 2 /f
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects" /v VisualFXSetting /t REG_DWORD /d 2 /f >nul
+reg add "HKCU\Control Panel\Performance" /v VisualFXSetting /t REG_DWORD /d 2 /f >nul
 echo.
 
 echo === Configurando Pagefile (Arquivo de Paginacao)...
@@ -55,19 +55,20 @@ sc config "dmwappushservice" start= disabled
 echo.
 
 echo === Desabilitando tarefas agendadas chatas...
-schtasks /Change /TN "Microsoft\Windows\OneDrive\OneDrive Standalone Update Task-S-1-5-21" /Disable
-schtasks /Change /TN "Microsoft\Office\OfficeTelemetryAgentLogOn" /Disable
-schtasks /Change /TN "Microsoft\Office\OfficeTelemetryAgentFallBack" /Disable
-schtasks /Change /TN "Microsoft\Windows\Application Experience\ProgramDataUpdater" /Disable
-schtasks /Change /TN "Microsoft\Windows\Customer Experience Improvement Program\Consolidator" /Disable
-schtasks /Change /TN "Microsoft\Windows\Customer Experience Improvement Program\KernelCeipTask" /Disable
-schtasks /Change /TN "Microsoft\Windows\Customer Experience Improvement Program\UsbCeip" /Disable
+:: Tente desativar mesmo se algumas não existirem
+schtasks /Change /TN "Microsoft\Windows\OneDrive\OneDrive Standalone Update Task-S-1-5-21" /Disable 2>nul
+schtasks /Change /TN "Microsoft\Office\OfficeTelemetryAgentLogOn" /Disable 2>nul
+schtasks /Change /TN "Microsoft\Office\OfficeTelemetryAgentFallBack" /Disable 2>nul
+schtasks /Change /TN "Microsoft\Windows\Application Experience\ProgramDataUpdater" /Disable 2>nul
+schtasks /Change /TN "Microsoft\Windows\Customer Experience Improvement Program\Consolidator" /Disable 2>nul
+schtasks /Change /TN "Microsoft\Windows\Customer Experience Improvement Program\KernelCeipTask" /Disable 2>nul
+schtasks /Change /TN "Microsoft\Windows\Customer Experience Improvement Program\UsbCeip" /Disable 2>nul
 echo.
 
 echo === Limpando logs do Windows...
-del /f /q C:\Windows\Logs\*
-del /f /q C:\Windows\Logs\CBS\*
-del /f /q C:\Windows\SoftwareDistribution\Download\*
+del /f /q C:\Windows\Logs\* >nul 2>&1
+del /f /q C:\Windows\Logs\CBS\* >nul 2>&1
+del /f /q C:\Windows\SoftwareDistribution\Download\* >nul 2>&1
 echo.
 
 echo === Executando otimizacao de SSD (TRIM)...
@@ -80,6 +81,20 @@ echo.
 
 echo === Reparando imagem do Windows (DISM)...
 DISM /Online /Cleanup-Image /RestoreHealth
+echo.
+
+:: Diagnósticos adicionais
+
+echo === Verificando conexoes de rede ESTABELECIDAS...
+netstat -ano | findstr ESTABLISHED
+
+echo === Salvando tarefas agendadas em Desktop...
+schtasks /query /fo LIST /v > "%USERPROFILE%\Desktop\tarefas_agendadas.txt"
+
+echo === Listando conexões com IP externo por PID:
+for /f "tokens=5" %%a in ('netstat -n -o ^| findstr ESTABLISHED') do (
+  tasklist /FI "PID eq %%a"
+)
 echo.
 
 :: Capturar espaço em disco depois
